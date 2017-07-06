@@ -31,6 +31,13 @@ def g4_dash(u):
 	return 3*u*u
 
 def FastICA(X, vectors):
+	"""The following algorithm is used to compute the independent componenets
+	1. Initialize a random vector
+	2. Make it of unit norm
+	3. Repeat until convergence
+	   W = E{xg(W.T*x)} - E{g_dash(W.T*x)}*W 
+	   W = W/norm(W)
+	"""
 	# The size of w1 is determined by the number of images
 	size = X.shape[0]
 	n = X.shape[1]
@@ -41,19 +48,20 @@ def FastICA(X, vectors):
 	w1 = w1/np.linalg.norm(w1)
 	w2 = w2/np.linalg.norm(w2)
 
-	i = 0
 	while( np.abs(np.dot(w1.T,w2)) < (1 - eps)):
-		# print i
 		w1 = w2
-		first = np.dot(X, g4(np.dot(w2.T, X)))/n
-		second = np.mean(g4_dash(np.dot(w2.T, X)))*w2
+		# first is E{xg(W.T*x)} term
+		first = np.dot(X, g3(np.dot(w2.T, X)))/n
+		# second is E{g_dash(W.T*x)}*W term
+		second = np.mean(g3_dash(np.dot(w2.T, X)))*w2
+		# Update step
 		w2 = first - second
+		# Using Gram-Schmidt deflation to decorelate the vectors
 		w3 = w2
 		for vector in vectors:
 			w3 = w3 - np.dot(w2.T, vector)*vector
 		w2 = w3
 		w2 = w2/np.linalg.norm(w2)
-		i = i + 1
 
 	return w1
 
@@ -61,26 +69,23 @@ def FastICA(X, vectors):
 names = ["unos", "dos", "tres"]
 images = utl.listImages(names, "mixed")
 
-# The images are 8 bit gray scaled images i.e. their value lie between 0 and 255
-# The values of pixel are rescaled to [0, 1]
-# The images are also mean centered
+# The images are mean centered
 centImages = []
 for image in images:
 	rescaleImage = image
 	centImage = rescaleImage - np.mean(rescaleImage)
 	centImages.append(centImage)
 
-# for row in centImages[0]:
-# 	print row
-
 # The images are whitened, the helper function is in utilities.py
-whiteImages = utl.whitenImages(centImages)
-# utl.plotImages(whiteImages, names, "../white_tranform", True, False)
-# utl.showHistogram(whiteImages, names, "../white_transform_histogram", False)
+whiteImages = utl.whitenImages(utl.list2matrix(centImages))
+
+# Uncomment the below lines to plot the images after whitening
+# utl.plotImages(utl.matrix2list(whiteImages), names, "../white_tranform", True, False)
+# utl.showHistogram(utl.matrix2list(whiteImages), names, "../white_transform_histogram", False)
 
 # The images are now converted into time series data
 # X is a 3*image_size matrix, with each row representing a image
-X = utl.list2matrix(whiteImages)
+X = whiteImages
 
 # Find the individual components one by one
 vectors = []
@@ -93,7 +98,7 @@ for i in range(0, len(images)):
 W = np.vstack(vectors)
 
 # Get the original matrix
-S = np.dot(W, utl.list2matrix(whiteImages))
+S = np.dot(W, whiteImages)
 
 # Get the unmixed images
 uimages = utl.matrix2list(S)
