@@ -10,7 +10,7 @@ def listImages(name_list, path, as_grey=True):
 	image_list = []
 
 	for name in name_list:
-		image = io.imread("./images/" + path + "/" + name + ".jpg", as_grey=as_grey)
+		image = io.imread(path + "/" + name + ".jpg", as_grey=as_grey)
 		if as_grey is True:
 			image = resize(image, (200, 200))
 		image_list.append(image)
@@ -22,8 +22,19 @@ def saveImages(image_list, name_list, path):
 	i = 0
 	for image in image_list:
 		name = name_list[i]
-		io.imsave("./images/" + path + "/" + name + ".jpg", image)
-		i += 1 
+		io.imsave(path + "/" + name + ".jpg", image)
+		i += 1
+
+def mixImages(image_list, weights):
+	""" Returns a image mixed in proportion with the ratios given by weights."""
+	size = image_list[0].shape
+	mixImage = np.zeros(size)
+	i = 0
+	for image in image_list:
+		mixImage += image*weights[i]
+		i += 1
+
+	return mixImage 
 
 def list2matrix(image_list):
 	"""Converts the image into a vector and 
@@ -45,31 +56,6 @@ def matrix2list(matrix):
 		image_list.append(image)
 
 	return image_list
-
-def whitenMatrix(matrix):
-	"""Whitening tranformation is applied to the images given as a matrix"""
-	"""The transformation for the matrix X is given by E*D^(-1/2)*transpose(E)*X"""
-	"""Where D is a diagonal matrix containing eigen values of covariance matrix of X"""
-	"""E is the matrix containing eigen vectors of covariance matrix of X"""
-	# Covariance matrix is approximated by this
-	covMatrix = np.dot(matrix, matrix.T)/matrix.shape[1]
-
-	# Doing the eigen decomposition of cavariance matrix of X 
-	eigenValue, eigenVector = np.linalg.eig(covMatrix)
-	# Making a diagonal matrix out of the array eigenValue
-	diagMatrix = np.diag(eigenValue)
-	# Computing D^(-1/2)
-	invSqrRoot = np.sqrt(np.linalg.pinv(diagMatrix))
-	# Final matrix which is used for transformation
-	whitenTrans = np.dot(eigenVector,np.dot(invSqrRoot, eigenVector.T))
-	# whiteMatrix is the matrix we want after all the required transformation
-	# To verify, compute the covvariance matrix, it will be approximately identity
-	whiteMatrix = np.dot(whitenTrans, matrix)
-
-	# print np.dot(whiteMatrix, whiteMatrix.T)/matrix.shape[1]
-
-	return whiteMatrix
-
 
 def showHistogram(image_list, name_list, path, toSave=False, hist_range=(0.0, 1.0)):
 	"""Shows the histogram of images specified by image_list 
@@ -95,7 +81,7 @@ def showHistogram(image_list, name_list, path, toSave=False, hist_range=(0.0, 1.
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/" + path + ".jpg")
+		plt.savefig(path + ".jpg")
 	plt.show()
 
 def plotImages(image_list, name_list, path, as_grey, toSave=False):
@@ -117,31 +103,5 @@ def plotImages(image_list, name_list, path, as_grey, toSave=False):
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/images" + path + ".jpg",bbox_inches='tight')
-	plt.show()
-
-def plotSounds(sound_list, name_list, samplerate, path, toSave=False):
-	"""Plots the sounds as a time series data"""
-
-	times = np.arange(len(sound_list[0]))/float(samplerate)
-
-	fig = plt.figure(figsize=(15,4))
-	imageCoordinate = 100 + 10*len(sound_list) + 1
-	i = 0
-
-	for sound in sound_list:
-		fig.add_subplot(imageCoordinate)
-		plt.fill_between(times, sound, color='k')
-		plt.xlim(times[0], times[-1])
-		plt.title(name_list[i])
-		plt.xlabel('time (s)')
-		plt.ylabel('amplitude')
-		# plt.axis("off")
-		plt.plot(sound)
-
-		imageCoordinate += 1
-		i += 1
-
-	if toSave:
-		plt.savefig("./plots/sounds/" + path + ".jpg", bbox_inches='tight')
+		plt.savefig(path + ".jpg",bbox_inches='tight')
 	plt.show()
