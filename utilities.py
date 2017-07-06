@@ -58,12 +58,11 @@ def matrix2list(matrix):
 
 	return image_list
 
-def whitenImages(image_list):
-	"""Whitening tranformation is applied to the images given in image_list"""
+def whitenImages(matrix):
+	"""Whitening tranformation is applied to the images given as a matrix"""
 	"""The transformation for the matrix X is given by E*D^(-1/2)*transpose(E)*X"""
 	"""Where D is a diagonal matrix containing eigen values of covariance matrix of X"""
 	"""E is the matrix containing eigen vectors of covariance matrix of X"""
-	matrix = list2matrix(image_list)
 	# Covariance matrix is approximated by this
 	covMatrix = np.dot(matrix, matrix.T)/matrix.shape[1]
 
@@ -81,7 +80,7 @@ def whitenImages(image_list):
 
 	# print np.dot(whiteMatrix, whiteMatrix.T)/matrix.shape[1]
 
-	return matrix2list(whiteMatrix)
+	return whiteMatrix
 
 
 def showHistogram(image_list, name_list, path, toSave=False, hist_range=(0.0, 1.0)):
@@ -115,7 +114,7 @@ def plotImages(image_list, name_list, path, as_grey, toSave=False):
 	"""Plots the images given in image_list side by side."""
 
 	fig = plt.figure()
-	imageCoordinate = 131
+	imageCoordinate = 100 + 10*len(image_list) + 1
 	i = 0
 
 	for image in image_list:
@@ -130,5 +129,31 @@ def plotImages(image_list, name_list, path, as_grey, toSave=False):
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/" + path + ".jpg",bbox_inches='tight')
+		plt.savefig("./plots/images" + path + ".jpg",bbox_inches='tight')
+	plt.show()
+
+def plotSounds(sound_list, name_list, samplerate, path, toSave=False):
+	"""Plots the sounds as a time series data"""
+
+	times = np.arange(len(sound_list[0]))/float(samplerate)
+
+	fig = plt.figure(figsize=(15,4))
+	imageCoordinate = 100 + 10*len(sound_list) + 1
+	i = 0
+
+	for sound in sound_list:
+		fig.add_subplot(imageCoordinate)
+		plt.fill_between(times, sound, color='k')
+		plt.xlim(times[0], times[-1])
+		plt.title(name_list[i])
+		plt.xlabel('time (s)')
+		plt.ylabel('amplitude')
+		# plt.axis("off")
+		plt.plot(sound)
+
+		imageCoordinate += 1
+		i += 1
+
+	if toSave:
+		plt.savefig("./plots/sounds/" + path + ".jpg", bbox_inches='tight')
 	plt.show()
