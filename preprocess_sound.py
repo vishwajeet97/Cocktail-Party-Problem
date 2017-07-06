@@ -1,10 +1,14 @@
 """The script makes the sources to have same length,
 as well as have the same sampling rate"""
 from scipy.io import wavfile
+import utilities as utl
 
 # Read the .wav files as numpy arrays
 rate1, data1 = wavfile.read("./sounds/sourceX.wav")
 rate2, data2 = wavfile.read("./sounds/sourceY.wav")
+
+# Plot the sounds as time series data
+utl.plotSounds([data1, data2], ["PhoneRing", "StarWars"], rate1, "Ring_StarWars_original", True)
 
 # Make both of the files to have same length as well as same sampling rate
 minimum = min(data1.shape[0], data2.shape[0])
