@@ -29,13 +29,22 @@ def mixImages(image_list, weights):
 	""" Returns a image mixed in proportion with the ratios given by weights."""
 	size = image_list[0].shape
 	mixImage = np.zeros(size)
-
 	i = 0
 	for image in image_list:
 		mixImage += image*weights[i]
 		i += 1
 
 	return mixImage
+
+def mixSounds(sound_list, weights):
+	""" Return a sound array mixed in proportion with the ratios given by weights"""
+	mixSound = np.zeros(len(sound_list[0]))
+	i = 0
+	for sound in sound_list:
+		mixSound += sound*weights[i]
+		i += 1
+
+	return mixSound 
 
 def list2matrix(image_list):
 	"""Converts the image into a vector and 
@@ -58,7 +67,7 @@ def matrix2list(matrix):
 
 	return image_list
 
-def whitenImages(matrix):
+def whitenMatrix(matrix):
 	"""Whitening tranformation is applied to the images given as a matrix"""
 	"""The transformation for the matrix X is given by E*D^(-1/2)*transpose(E)*X"""
 	"""Where D is a diagonal matrix containing eigen values of covariance matrix of X"""

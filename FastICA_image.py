@@ -65,46 +65,47 @@ def FastICA(X, vectors):
 
 	return w1
 
-# Read the images from ./images/mixed
-names = ["unos", "dos", "tres"]
-images = utl.listImages(names, "mixed")
+if __name__ == "__main__":
+	# Read the images from ./images/mixed
+	names = ["unos", "dos", "tres"]
+	images = utl.listImages(names, "mixed")
 
-# The images are mean centered
-centImages = []
-for image in images:
-	rescaleImage = image
-	centImage = rescaleImage - np.mean(rescaleImage)
-	centImages.append(centImage)
+	# The images are mean centered
+	centImages = []
+	for image in images:
+		rescaleImage = image
+		centImage = rescaleImage - np.mean(rescaleImage)
+		centImages.append(centImage)
 
-# The images are whitened, the helper function is in utilities.py
-whiteImages = utl.whitenImages(utl.list2matrix(centImages))
+	# The images are whitened, the helper function is in utilities.py
+	whiteImages = utl.whitenMatrix(utl.list2matrix(centImages))
 
-# Uncomment the below lines to plot the images after whitening
-# utl.plotImages(utl.matrix2list(whiteImages), names, "../white_tranform", True, False)
-# utl.showHistogram(utl.matrix2list(whiteImages), names, "../white_transform_histogram", False)
+	# Uncomment the lines below to plot the images after whitening
+	# utl.plotImages(utl.matrix2list(whiteImages), names, "../white_tranform", True, False)
+	# utl.showHistogram(utl.matrix2list(whiteImages), names, "../white_transform_histogram", False)
 
-# The images are now converted into time series data
-# X is a 3*image_size matrix, with each row representing a image
-X = whiteImages
+	# The images are now converted into time series data
+	# X is a 3*image_size matrix, with each row representing a image
+	X = whiteImages
 
-# Find the individual components one by one
-vectors = []
-for i in range(0, len(images)):
-	vector = FastICA(X, vectors)
-	# print vector
-	vectors.append(vector)
+	# Find the individual components one by one
+	vectors = []
+	for i in range(0, len(images)):
+		vector = FastICA(X, vectors)
+		# print vector
+		vectors.append(vector)
 
-# Stack the vectors to form the unmixing matrix
-W = np.vstack(vectors)
+	# Stack the vectors to form the unmixing matrix
+	W = np.vstack(vectors)
 
-# Get the original matrix
-S = np.dot(W, whiteImages)
+	# Get the original matrix
+	S = np.dot(W, whiteImages)
 
-# Get the unmixed images
-uimages = utl.matrix2list(S)
+	# Get the unmixed images
+	uimages = utl.matrix2list(S)
 
-# Plot the unmixed images
-utl.plotImages(uimages, names, "../ica_g4", True, False)
+	# Plot the unmixed images
+	utl.plotImages(uimages, names, "../ica_g4", True, False)
 
-# Plot the histogram of unmixed images
-utl.showHistogram(uimages, names, "../ica_histogram_g4", False)
+	# Plot the histogram of unmixed images
+	utl.showHistogram(uimages, names, "../ica_histogram_g4", False)
