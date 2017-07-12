@@ -55,7 +55,7 @@ def whitenMatrix(matrix):
 	covMatrix = np.dot(matrix, matrix.T)/matrix.shape[1]
 
 	# Doing the eigen decomposition of cavariance matrix of X 
-	eigenValue, eigenVector = np.linalg.eig(covMatrix)
+	eigenValue, eigenVector = np.linalg.eigh(covMatrix)
 	# Making a diagonal matrix out of the array eigenValue
 	diagMatrix = np.diag(eigenValue)
 	# Computing D^(-1/2)
@@ -95,7 +95,7 @@ def showHistogram(image_list, name_list, path, toSave=False, hist_range=(0.0, 1.
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/" + path + ".jpg")
+		plt.savefig("./plots/images/" + path + ".jpg")
 	plt.show()
 
 def plotImages(image_list, name_list, path, as_grey, toSave=False):
@@ -117,7 +117,7 @@ def plotImages(image_list, name_list, path, as_grey, toSave=False):
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/images" + path + ".jpg",bbox_inches='tight')
+		plt.savefig("./plots/images/" + path + ".jpg",bbox_inches='tight')
 	plt.show()
 
 def plotSounds(sound_list, name_list, samplerate, path, toSave=False):
