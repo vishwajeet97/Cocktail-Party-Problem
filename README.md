@@ -34,9 +34,9 @@ FOBI is a one shot algorithm which tries to solve the same problem with matrix f
 of a quadratically weighted covariance matrix of the data. The eigenvectors form the mixing matrix and is orthogonal  
 which is to be expected.  
 The proof and math behind the algorithm is neatly explained in the original paper  
-[SOURCE SEPARATION USING HIGHER ORDER MOMENTS](http://ieeexplore.ieee.org/document/266878/) - *Jean-Francois Cardoso*
+[SOURCE SEPARATION USING HIGHER ORDER MOMENTS](http://ieeexplore.ieee.org/document/266878/) - *Jean-Francois Cardoso*  
 
-The original colored images
+The original colored images  
 ![Original](./plots/images/original.jpg)
 
 The black and white images which were used
@@ -53,9 +53,9 @@ The result of running the FastICA algorithm
 
 ### FastICA and FOBI applied to sounds
 
-The above 2 algorithms work straight out of the box for sounds as well.
+The above 2 algorithms work straight out of the box for sounds as well.  
 
-The original sounds
+The original sounds  
 ![Original](./plots/sounds/Ring_StarWars_original.jpg)
 
 The mixed sounds
