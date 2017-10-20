@@ -22,7 +22,6 @@ whiteImages = utl.whitenMatrix(utl.list2matrix(centImages))
 
 # Uncomment the lines below to plot the images after whitening
 # utl.plotImages(utl.matrix2list(whiteImages), names, "../white_tranform", True, False)
-# utl.showHistogram(utl.matrix2list(whiteImages), names, "../white_transform_histogram", False)
 
 # The images are now converted into time series data
 # X is a 3*image_size matrix, with each row representing a image
@@ -56,11 +55,5 @@ fobi_uimages = utl.matrix2list(fobiS)
 # Plot the unmixed images for FastICA
 utl.plotImages(uimages, names, "ica_g4", True, False)
 
-# Plot the histogram of unmixed images for FastICA
-utl.showHistogram(uimages, names, "ica_histogram_g4", False)
-
 # Plot the unmixed images for FOBI
 utl.plotImages(fobi_uimages, names, "fobi", True, False)
-
-# Plot the histogram of unmixed images for FOBI
-utl.showHistogram(fobi_uimages, names, "fobi_histogram", False)
