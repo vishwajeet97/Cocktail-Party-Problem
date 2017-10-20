@@ -117,7 +117,7 @@ def plotImages(image_list, name_list, path, as_grey, toSave=False):
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/images/" + path + ".jpg",bbox_inches='tight')
+		plt.savefig("./plots/images/" + path + ".png",bbox_inches='tight')
 	plt.show()
 
 def plotSounds(sound_list, name_list, samplerate, path, toSave=False):
@@ -143,5 +143,5 @@ def plotSounds(sound_list, name_list, samplerate, path, toSave=False):
 		i += 1
 
 	if toSave:
-		plt.savefig("./plots/sounds/" + path + ".jpg", bbox_inches='tight')
+		plt.savefig("./plots/sounds/" + path + ".png", bbox_inches='tight')
 	plt.show()

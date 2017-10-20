@@ -52,8 +52,10 @@ fobiS = np.dot(fobiW.T, whiteImages)
 # Get the unmixed images through FOBI
 fobi_uimages = utl.matrix2list(fobiS)
 
-# Plot the unmixed images for FastICA
-utl.plotImages(uimages, names, "ica_g4", True, False)
+# Plot the unmixed images for FastICA and save them as well
+utl.plotImages(uimages, names, "ica_g3", True, True)
+utl.saveImages(uimages, names, "after/fastica")
 
-# Plot the unmixed images for FOBI
-utl.plotImages(fobi_uimages, names, "fobi", True, False)
+# Plot the unmixed images for FOBI and save them as well
+utl.plotImages(fobi_uimages, names, "fobi", True, True)
+utl.saveImages(fobi_uimages, names, "after/fobi")

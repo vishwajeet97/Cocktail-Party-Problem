@@ -31,8 +31,8 @@ def FastICA(X, vectors, eps):
 	"""FastICA technique is used.
 	The function returns one independent component.
 	X is assumed to be centered and whitened.
-	The paper by A. Hyvärinen and E. Oja is in itself the best resource out there for it.
-	Independent Component Analysis:Algorithms and Applications - A. Hyvärinen and E. Oja
+	The paper by A. Hyvarinen and E. Oja is in itself the best resource out there for it.
+	Independent Component Analysis:Algorithms and Applications - A. Hyvarinen and E. Oja
 	"""
 	# The size of w1 is determined by the number of images
 	size = X.shape[0]
