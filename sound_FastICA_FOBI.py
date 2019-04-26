@@ -7,6 +7,9 @@ import numpy as np
 # Specify the name
 name = ["X", "Y"]
 
+#specifing epsilon(upper bound to the error)
+eps = 0.00000001
+
 # Read the mixed signals
 rate1, data1 = wavfile.read('./sounds/mixed' + name[0] + '.wav')
 rate2, data2 = wavfile.read('./sounds/mixed' + name[1] + '.wav')
